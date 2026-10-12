@@ -18,6 +18,40 @@
     if (url && el.dataset.external !== 'false') { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
   });
 
+  // The Chrome Web Store listing is not public yet; show a helpful launch dialog.
+  const launchModal = document.querySelector('[data-launch-modal]');
+  let launchPreviousFocus = null;
+  function closeLaunchModal() {
+    if (!launchModal || launchModal.hidden) return;
+    launchModal.hidden = true;
+    document.body.classList.remove('launch-modal-open');
+    if (launchPreviousFocus) launchPreviousFocus.focus();
+  }
+  function openLaunchModal(trigger) {
+    if (!launchModal) return;
+    launchPreviousFocus = trigger;
+    launchModal.hidden = false;
+    document.body.classList.add('launch-modal-open');
+    launchModal.querySelector('.launch-modal__close')?.focus();
+  }
+  document.querySelectorAll('[data-link="chromeStoreUrl"]').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      openLaunchModal(el);
+    });
+  });
+  launchModal?.querySelectorAll('[data-launch-close]').forEach((el) => el.addEventListener('click', closeLaunchModal));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeLaunchModal();
+    if (event.key === 'Tab' && launchModal && !launchModal.hidden) {
+      const focusable = [...launchModal.querySelectorAll('a[href], button:not([disabled])')];
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+
   const menuButton = document.querySelector('[data-menu-toggle]');
   const nav = document.querySelector('[data-nav-links]');
   if (menuButton && nav) {
