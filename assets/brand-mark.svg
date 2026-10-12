@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LinkDeck mark">
+<rect x="7" y="10" width="34" height="40" rx="2" fill="#f5c400" stroke="#24221e" stroke-width="3"/>
+<path d="M18 20h13M18 28h13M18 36h8" fill="none" stroke="#24221e" stroke-width="3" stroke-linecap="square"/>
+<path d="M31 47 52 26M39 26h13v13" fill="none" stroke="#24221e" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>
